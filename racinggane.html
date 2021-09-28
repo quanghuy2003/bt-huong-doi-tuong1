@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+
+</head>
+<body>
+<body onload="docReady()">
+
+<img id="car" src="car.jpg" height="200" width="150" style="position:absolute;left:500px; top:80%;"/>
+<div id="display"></div>
+
+<img src="green" height=1000" width="10" style="position:absolute;left:500px; top:0px">
+<img src="green" height=1000" width="10" style="position:absolute;left:650px; top:0px">
+<img src="green" height=1000" width="10" style="position:absolute;left:800px; top:0px">
+<img src="green" height=1000" width="10" style="position:absolute;left:950px; top:0px">
+<button onclick="startGame()">START</button>
+<script>
+    document.getElementById("fren").src = 'fren1.jpg'
+    document.getElementById("frenn").src = 'fren2.jpg'
+
+    function thingsOnRoadMove() {
+        let element = document.getElementById("fren")
+        element.style.top = parseInt(element.style.top) + 5 + 'px';
+        if (parseInt(element.style.top) > (850)) {
+            element.style.top = 0 + 'px'
+            element.style.left = 500 + Math.floor(Math.random() * 3) * 150 + 'px'
+            element.src = "fren" + Math.floor(Math.random() * 3 + 1) + ".jpg"
+        }
+        move=requestAnimationFrame(thingsOnRoadMove)
+        isCollide()
+    }
+
+    function thingsOnRoadMove2() {
+        let element = document.getElementById("frenn")
+        element.style.top = parseInt(element.style.top) + 5 + 'px';
+        if (parseInt(element.style.top) > (850)) {
+            element.style.top = 0 + 'px'
+            element.style.left = 500 + Math.floor(Math.random() * 3) * 150 + 'px'
+            element.src = "fren" + Math.floor(Math.random() * 3 + 1) + ".jpg"
+        }
+        move2=requestAnimationFrame(thingsOnRoadMove2)
+        isCollide()
+    }
+    function moveSelection(evt) {
+        switch (evt.keyCode) {
+            case 37:
+                leftArrowPressed();
+                break;
+            case 39:
+                rightArrowPressed();
+                break;
+        }
+    }
+    function leftArrowPressed() {
+        let element = document.getElementById("car");
+        if (parseInt(element.style.left) > 500) {
+            element.style.left = parseInt(element.style.left) - 150 + 'px';
+        }
+    }
+
+    function rightArrowPressed() {
+        let element = document.getElementById("car");
+        if (parseInt(element.style.left) < 800) {
+            element.style.left = parseInt(element.style.left) + 150 + 'px';
+        }
+
+    }
+
+    function docReady() {
+        window.addEventListener('keydown', moveSelection);
+
+    }
+    function isCollide(){
+        let coordCar=document.getElementById('car').getBoundingClientRect()
+        let coordFren1=document.getElementById('fren').getBoundingClientRect()
+        let coordFren2=document.getElementById('frenn').getBoundingClientRect()
+        if((coordCar.x===coordFren1.x)&&(coordCar.y-coordFren1.y<150)){
+            endGame()
+        }
+        if((coordCar.x===coordFren2.x)&&(coordCar.y-coordFren2.y<150)){
+            endGame()
+        }
+    }
+    function startGame(){
+        let display='<img src="fren1.jpg" id="fren" height="150" width="150" style="position:absolute;left:500px; top:0px"/>\n'
+        document.getElementById('display').innerHTML=display
+        let move;
+
+
+        move= requestAnimationFrame(thingsOnRoadMove)
+        setTimeout(obstacle2Added,1500)
+    }
+    function obstacle2Added(){
+        let display= '<img id="frenn" src="fren2.jpg" height="150" width="150" style="position:absolute;left:650px; top:0px"/>'
+        document.getElementById('display').innerHTML+=display
+        let move2;
+        move2=requestAnimationFrame(thingsOnRoadMove2)
+    }
+    function endGame(){
+        cancelAnimationFrame(move)
+        cancelAnimationFrame(move2)
+        clearInterval(isCollide)
+        alert('thua roi')
+    }
+
+</script>
+</body>'
+</html>
