@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id="myCanvas" width="500" height="500" style="border: 1px solid black"></canvas>
+<!--<button onclick="moveRec()"> clickme</button>-->
+<script>
+    class Rectangle {
+        width;
+        height;
+        color;
+        x;
+        y;
+        speedX;
+        speedY;
+        constructor(width, height,x,y,color,speedX,speedY) {
+            this.width = width
+            this.height = height
+            this.x= x;
+            this.y =y;
+            this.color =color
+            this.speedX = speedX;
+            this.speedY = speedY
+        }
+
+        setWidth(width) {
+            this.width = width;
+        }
+
+        setHeight(height) {
+            this.height = height;
+        }
+
+        getArea() {
+            return this.width * this.height
+        }
+
+        getPeri() {
+            return this.width * 2 + this.height * 2
+        }
+
+        drawCanvas(ctx) {
+            ctx.beginPath()
+            ctx.rect(this.x, this.y, this.width, this.height)
+            ctx.fillStyle = this.color;
+            ctx.fill();
+            ctx.closePath();
+        }
+        moveRight(){
+            this.x+= this.speedX;
+        }
+        moveDown(){
+            this.y+= this.speedY;
+        }
+        check(){
+            if(this.y <0||this.y>500 - this.height){
+                this.speedY = -this.speedY;
+            }
+            if (this.x<0 || this.x > 500 - this.width){
+                this.speedX = -this.speedX;
+            }
+        }
+
+    }
+    let ctx =document.getElementById("myCanvas").getContext("2d");
+    let rec = new Rectangle(100,100,50,50,"blue",2,4);
+    rec.drawCanvas(ctx);
+    moveRec();
+    function moveRec(){
+        ctx.clearRect(rec.x,rec.y,rec.width,rec.height)
+        rec.moveDown();
+        rec.moveRight();
+        rec.check();
+        rec.drawCanvas(ctx);
+        // setTimeout(moveRec,1000/60);
+        requestAnimationFrame(moveRec)
+        //có thể dùng 1 trong 2 cách settimeout hoặc animation
+    }
+    // for (let i = 0; i < 10; i++) {
+    //     let x =Math.random()*500;
+    //     let y =Math.random()*500;
+    //     let red = Math.random()*255;
+    //     let green = Math.random()*255;
+    //     let blue = Math.random()*255;
+    //     let color = "rgb(" + red + "," + blue + "," + green +")"
+    //     let rectangle1 = new Rectangle(200,100,x,y,color);
+    //     rectangle1.drawCanvas(ctx);
+    // }
+
+
+</script>
+</body>
+</html>
